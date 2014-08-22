@@ -3,6 +3,7 @@ package com.zayandroid.fineandall.mainapp;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,7 +16,7 @@ import android.view.ViewGroup;
 import java.util.Locale;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity  implements ExploreQuestionsFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -68,6 +69,11 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -115,7 +121,8 @@ public class MainActivity extends Activity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+           // return PlaceholderFragment.newInstance(position + 1);
+            return ExploreQuestionsFragment.newInstance("", "");
         }
 
         @Override
