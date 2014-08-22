@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.zayandroid.fineandall.mainapp.common.Question;
+import com.zayandroid.fineandall.mainapp.models.Question;
 
 /**
  * A simple {@link Fragment} subclass.
