@@ -1,4 +1,4 @@
-package com.zayindroid.fineandall.mainapp;
+package com.zayandroid.fineandall.mainapp;
 
 import android.app.Activity;
 import android.app.Fragment;
