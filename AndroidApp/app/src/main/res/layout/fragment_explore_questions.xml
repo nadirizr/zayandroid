@@ -1,52 +1,50 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/explore"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context="com.zayindroid.fineandall.mainapp.ExploreQuestionsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/question_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <Button
-        android:id="@+id/NoButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_gravity="left|bottom"
-        android:clickable="true"
-        android:text="       No         " />
-
-    <Button
-        android:id="@+id/YesButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_gravity="right|bottom"
-        android:clickable="true"
-        android:text="       Yes       " />
-
-    <Button
-        android:id="@+id/AddQuestion"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_gravity="right|top"
-        android:clickable="true"
-        android:text="Add Qeustion" />
+        android:layout_height="match_parent"
+        android:contentDescription="@string/image_description" />
 
     <TextView
-        android:id="@+id/new_question"
-        android:layout_width="300dp"
-        android:layout_height="423dp"
-        android:layout_gravity="center" />
+        android:id="@+id/question_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp" >
+
+        <Button
+            android:id="@+id/NoButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:background="#faaa"
+            android:text="No" />
+
+        <Button
+            android:id="@+id/YesButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#faaa"
+            android:text="Yes" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
