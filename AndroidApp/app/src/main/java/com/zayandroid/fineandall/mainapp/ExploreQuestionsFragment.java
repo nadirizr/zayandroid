@@ -1,14 +1,21 @@
 package com.zayandroid.fineandall.mainapp;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.zayandroid.fineandall.mainapp.models.Question;
+
+import java.io.InputStream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,11 +76,14 @@ public class ExploreQuestionsFragment extends Fragment {
 
         // TODO: get new question from DB
         // Create the text view
-        Question newQuestion = new Question(100, 100);
-        TextView textView = (TextView) view.findViewById(R.id.new_question);
+        Question question = new Question("Why or why not", "http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg", 100, 10);
+        TextView textView = (TextView) view.findViewById(R.id.question_text);
         textView.setTextSize(40);
-        // Set the text view as the activity layout
-        textView.setText(newQuestion.question);
+        textView.setText(question.question);
+
+        if (question.imageUrl != null) {
+            new DownloadImageTask((ImageView) view.findViewById(R.id.question_image)).execute(question.imageUrl);
+        }
 
         return view;
     }
@@ -115,5 +125,30 @@ public class ExploreQuestionsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap icon = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                icon = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return icon;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

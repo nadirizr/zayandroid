@@ -6,6 +6,7 @@ package com.zayandroid.fineandall.mainapp.models;
 public class Question {
 
     public String question;
+    public String imageUrl;
     public int yesCount;
     public int noCount;
 
@@ -15,6 +16,7 @@ public class Question {
 
     public Question(String question, String imageUrl, int yesCount, int noCount) {
         this.question = question;
+        this.imageUrl = imageUrl;
         this.yesCount = yesCount;
         this.noCount = noCount;
     }

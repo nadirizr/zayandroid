@@ -10,5 +10,6 @@
     <string name="action_search">Search</string>
     <string name="action_new_question">NewQuestion</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="image_description">Background image</string>
 
 </resources>

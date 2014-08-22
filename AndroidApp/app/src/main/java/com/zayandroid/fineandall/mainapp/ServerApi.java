@@ -1,13 +1,12 @@
 package com.zayandroid.fineandall.mainapp;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.zayandroid.fineandall.mainapp.models.Question;
 
@@ -43,7 +42,8 @@ public class ServerApi {
                                 Question question = new Question(text, imageUrl, yesCount, noCount);
                                 questions.add(question);
                             } catch (JSONException e) {
-                                // Damn
+                                Log.e("ServerApi", "Error while parsing post", e);
+                                e.printStackTrace();
                             }
                         }
 
@@ -53,7 +53,7 @@ public class ServerApi {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Well, damn
+                        Log.e("ServerApi", "Error while getting posts", error);
                         error.printStackTrace();
                     }
                 });
