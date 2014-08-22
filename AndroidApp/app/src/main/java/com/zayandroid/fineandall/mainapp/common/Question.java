@@ -15,14 +15,14 @@ public class Question {
 
     //constructor
     public Question(int a, int b) {
-        yesCount = a;
-        noCount = b;
-        question = "Your boyfriend  is fine and all.. but he like to jerk off to gradle!";
+        yesCount    = a;
+        noCount      = b;
+        question    = "Your boyfriend  is fine and all.. but he like to jerk off to gradle!";
     }
 
     public Question() {
-        yesCount = 0;
-        noCount = 0;
-        question = "Your girlfriend  is fine and all.. ";
+        yesCount     = 0;
+        noCount       = 0;
+        question     = "Your girlfriend  is fine and all.. ";
     }
 }
