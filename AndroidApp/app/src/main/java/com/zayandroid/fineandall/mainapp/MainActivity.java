@@ -13,9 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zayandroid.fineandall.mainapp.models.Question;
-
-import java.util.List;
 import java.util.Locale;
 
 
@@ -40,12 +37,6 @@ public class MainActivity extends Activity  implements ExploreQuestionsFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ServerApi.fetchQuestions(this, new ServerApi.QuestionsResponseListener() {
-            @Override
-            public void onQuestionsReceived(List<Question> questions) {
-
-            }
-        });
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
