@@ -63,11 +63,11 @@ public class QuestionResultsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_results, container, false);
 
-//        TextView yesCountView = (TextView) view.findViewById(R.id.yes_count);
-//        yesCountView.setText("YES:\n" + yesCount);
-//
-//        TextView noCountView = (TextView) view.findViewById(R.id.no_count);
-//        noCountView.setText("NO:\n" + noCount);
+        TextView yesCountView = (TextView) view.findViewById(R.id.yes_count);
+        yesCountView.setText("YES:\n" + yesCount);
+
+        TextView noCountView = (TextView) view.findViewById(R.id.no_count);
+        noCountView.setText("NO:\n" + noCount);
 
         return view;
     }

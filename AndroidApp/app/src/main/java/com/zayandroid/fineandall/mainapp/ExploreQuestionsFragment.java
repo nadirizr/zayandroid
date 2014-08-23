@@ -135,7 +135,7 @@ public class ExploreQuestionsFragment extends Fragment {
         Fragment resultsFragment = QuestionResultsFragment.newInstance(yesCount, noCount);
         getActivity().getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.pager, resultsFragment)
+                .replace(R.id.container, resultsFragment)
                 .addToBackStack(null)
                 .commit();
     }
