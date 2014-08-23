@@ -34,7 +34,7 @@ public class ServerApi {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject object = response.getJSONObject(i);
-                                long id = object.getLong("id");
+                                String id = object.getString("_id");
                                 String text = object.getString("text");
                                 String imageUrl = object.getString("imageUrl");
                                 int yesCount = object.getInt("yes");
