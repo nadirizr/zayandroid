@@ -23,6 +23,11 @@
             }
         }
     },
+
+    "databaseConfig": {
+        "host": "localhost",
+        "database": "krakenNextPassport"
+    },
     
 
     "i18n": {
