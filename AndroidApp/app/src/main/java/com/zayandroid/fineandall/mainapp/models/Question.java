@@ -29,9 +29,12 @@ public class Question {
     public static Question fromJSON(JSONObject json) throws JSONException {
         String id = json.getString("_id");
         String text = json.getString("text");
-        String imageUrl = json.getString("imageUrl");
-        int yesCount = json.getInt("yes");
-        int noCount = json.getInt("no");
+        String imageUrl = null;
+        if (json.has("imageUrl")) {
+            imageUrl = json.getString("imageUrl");
+        }
+        int yesCount = json.getInt("yesCount");
+        int noCount = json.getInt("noCount");
 
         return new Question(id, text, imageUrl, yesCount, noCount);
     }
