@@ -119,6 +119,7 @@ public class QuestionResultsFragment extends Fragment {
         defaultRenderer.setChartTitle("Question Yes/No results");
         defaultRenderer.setChartTitleTextSize(60);
         defaultRenderer.setLabelsTextSize(40);
+        defaultRenderer.setLabelsColor(Color.BLACK);
         defaultRenderer.setLegendTextSize(40);
         defaultRenderer.setZoomButtonsVisible(true);
 
