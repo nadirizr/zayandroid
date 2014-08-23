@@ -7,16 +7,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.Locale;
 
 
-public class MainActivity extends Activity  implements ExploreQuestionsFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements
+        ExploreQuestionsFragment.OnFragmentInteractionListener,
+        QuestionResultsFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

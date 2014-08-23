@@ -5,6 +5,7 @@ package com.zayandroid.fineandall.mainapp.models;
  */
 public class Question {
 
+    private long id;
     public String question;
     public String imageUrl;
     public int yesCount;
@@ -14,7 +15,8 @@ public class Question {
     //TODO: add question type
     //TODO: add question rate
 
-    public Question(String question, String imageUrl, int yesCount, int noCount) {
+    public Question(long id, String question, String imageUrl, int yesCount, int noCount) {
+        this.id = id;
         this.question = question;
         this.imageUrl = imageUrl;
         this.yesCount = yesCount;
