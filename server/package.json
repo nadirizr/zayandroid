@@ -17,6 +17,7 @@
     "kraken-devtools": "^1.0.0",
     "kraken-js": "^1.0.1",
     "localizr": "^0.1.0",
+    "mongoose": "^3.8.15",
     "node-sass": "^0.8.6",
     "requirejs": "^2.1.14"
   },

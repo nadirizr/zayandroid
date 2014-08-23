@@ -24,6 +24,12 @@
         }
     },
 
+    "databaseConfig": {
+        "host": "localhost",
+        "database": "krakenNextPassport"
+    },
+    
+
     "middleware": {
 
         "devtools": {

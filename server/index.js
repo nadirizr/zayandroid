@@ -3,12 +3,7 @@
 
 var kraken = require('kraken-js'),
     app = require('express')(),
-    options = {
-        onconfig: function (config, next) {
-            //any config setup/overrides here
-            next(null, config);
-        }
-    },
+    options = require('./lib/spec')(app),
     port = process.env.PORT || 8000;
 
 
