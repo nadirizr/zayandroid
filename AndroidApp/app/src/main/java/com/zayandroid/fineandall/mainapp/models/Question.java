@@ -26,6 +26,22 @@ public class Question {
         this.noCount = noCount;
     }
 
+    public Question(String id, String question, int yesCount, int noCount) {
+        this.id = id;
+        this.question = question;
+        this.imageUrl = "";
+        this.yesCount = yesCount;
+        this.noCount = noCount;
+    }
+
+    public Question(String id, String question) {
+        this.id = id;
+        this.question = question;
+        this.imageUrl = "";
+        this.yesCount = 0;
+        this.noCount = 0;
+    }
+
     public static Question fromJSON(JSONObject json) throws JSONException {
         String id = json.getString("_id");
         String text = json.getString("text");
