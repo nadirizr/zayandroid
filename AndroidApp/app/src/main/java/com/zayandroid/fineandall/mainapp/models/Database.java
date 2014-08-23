@@ -19,20 +19,31 @@ public class Database {
         questions = new HashMap<String, Question>();
     }
 
-    public Question getQuestion(Context context) {
-        new DownloadQuestion(context).execute(1);
-
-        while (questions.isEmpty()) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    public void getQuestion(Context context, final QuestionListener listener) {
+        if (!questions.isEmpty()) {
+            sendRandomQuestionToListener(listener);
         }
+        ServerApi.fetchQuestions(context, new ServerApi.QuestionsResponseListener() {
+            @Override
+            public void onQuestionsReceived(List<Question> questionsFromServer) {
+                for (Question question : questionsFromServer) {
+                    questions.put(question.id, question);
+                }
+                sendRandomQuestionToListener(listener);
+            }
 
+            @Override
+            public void onFailure(Exception e) {
+                listener.onFailure(e);
+            }
+        });
+    }
+
+    private void sendRandomQuestionToListener(QuestionListener listener) {
         Random generator = new Random();
         Question[] values = questions.values().toArray(new Question[]{});
-        return values[generator.nextInt(values.length)];
+        Question question = values[generator.nextInt(values.length)];
+        listener.onQuestion(question);
     }
 
     public Question getQuestion(String questionId) {
@@ -68,32 +79,8 @@ public class Database {
         public void onFailure(Exception e);
     }
 
-    private class DownloadQuestion extends AsyncTask<Integer, Integer, Void> {
-        private Context context;
-
-        private DownloadQuestion(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected Void doInBackground(Integer... integers) {
-            ServerApi.fetchQuestions(context, new UpdateCurrentQuestion());
-            return null;
-        }
-
-        class UpdateCurrentQuestion implements ServerApi.QuestionsResponseListener {
-            @Override
-            public void onQuestionsReceived(List<Question> questionsFromServer) {
-                for (Question question : questionsFromServer) {
-                    questions.put(question.id, question);
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                questions.put("Mock", new Question("Mock", "MOCK MOCK"));
-            }
-        }
+    public interface QuestionListener {
+        public void onQuestion(Question question);
+        public void onFailure(Exception e);
     }
-
 }
