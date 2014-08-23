@@ -6,9 +6,10 @@
     tools:context="com.zayandroid.fineandall.mainapp.NewQuestionFragment">
 
     <TextView
+        android:id="@+id/question_template"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="סבבה והכל אבל ..."
+        android:text="סבבה והכל אבל "
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:textSize="24sp" />
