@@ -25,8 +25,8 @@
     },
 
     "databaseConfig": {
-        "host": "localhost",
-        "database": "krakenNextPassport"
+        "host": "sigalk:Zaq12345@kahana.mongohq.com:10091",
+        "database": "zayandroid"
     },
     
 
