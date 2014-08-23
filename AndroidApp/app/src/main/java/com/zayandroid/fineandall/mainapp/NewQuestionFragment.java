@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.zayandroid.fineandall.mainapp.models.Database;
 import com.zayandroid.fineandall.mainapp.models.Question;
@@ -84,7 +85,8 @@ public class NewQuestionFragment extends Fragment {
     }
 
     private void createAndDisplayQuestion() {
-        String text = ((EditText) getView().findViewById(R.id.question_text)).getText().toString();
+        String text = ((TextView) getView().findViewById(R.id.question_template)).getText().toString() +
+                ((EditText) getView().findViewById(R.id.question_text)).getText().toString();
         String imageUrl = null;
         Database.getInstance().addQuestion(getActivity(), text, imageUrl, new Database.NewQuestionListener() {
             @Override
