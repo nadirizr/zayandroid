@@ -32,9 +32,9 @@ exports.updateQuestion = function(id, answer, callback) {
     }
 
     if (answer == 'yes') {
-      question.yes_count++;
+      question.yesCount++;
     } else if (answer == 'no') {
-      question.no_count++;
+      question.noCount++;
     } else {
       return callback('Invalid answer: ' + answer, null);
     }
@@ -52,14 +52,14 @@ exports.addStubQuestions = function() {
     var q1 = new Question({
       text: 'יש לה קרציה בין הבהונות',
       imageUrl: 'http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg',
-      yes_count: 13,
-      no_count: 4
+      yesCount: 13,
+      noCount: 4
     });
     var q2 = new Question({
       text: 'יש לה 2 קרציות בין הבהונות',
       imageUrl: 'http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg',
-      yes_count: 20,
-      no_count: 1
+      yesCount: 20,
+      noCount: 1
     });
 
     q1.save();
