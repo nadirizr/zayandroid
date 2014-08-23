@@ -6,6 +6,10 @@ exports.getAllQuestions = function(callback) {
   Question.find({}).exec(callback);
 };
 
+exports.getQuestionsSubset = function(start, limit, callback) {
+  Question.find({}).skip(start).limit(limit).exec(callback);
+};
+
 exports.getQuestion = function(id, callback) {
   Question.findOne({ _id: id }).exec(callback);
 };
@@ -49,20 +53,14 @@ exports.addStubQuestions = function() {
   // Remove existing questions.
   Question.find({}).remove(function(err, res) {
     // Add new stub questions.
-    var q1 = new Question({
-      text: 'יש לה קרציה בין הבהונות',
-      imageUrl: 'http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg',
-      yesCount: 13,
-      noCount: 4
-    });
-    var q2 = new Question({
-      text: 'יש לה 2 קרציות בין הבהונות',
-      imageUrl: 'http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg',
-      yesCount: 20,
-      noCount: 1
-    });
-
-    q1.save();
-    q2.save();
+    for (var i = 2; i < 22; ++i) {
+      var q = new Question({
+        text: 'יש לה ' + i + ' קרציות בין הבהונות ',
+        imageUrl: 'http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg',
+        yesCount: (i+1),
+        noCount: (i+1)
+      });
+      q.save();
+    }
   });
 };
