@@ -1,21 +1,15 @@
 'use strict';
 
-
-var PostsModel = require('../../models/posts');
-
+var QuestionLibrary = require('../../lib/questions');
 
 module.exports = function (router) {
 
-    var model = new PostsModel();
-    var posts = model.posts();
-
     router.get('/', function (req, res) {
         
-        res.format({
-            json: function () {
-                res.json(posts);
-            }
+        QuestionLibrary.getAllQuestions(function(err, questions) {
+            res.json(questions);
         });
+
     });
 
 };
