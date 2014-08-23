@@ -2,11 +2,15 @@
 
 var questionLib = require('../../lib/questions');
 
+var PAGE_SIZE = 10;
+
 module.exports = function (router) {
 
     router.get('/', function (req, res) {
         
-        questionLib.getAllQuestions(function(err, questions) {
+        var start = req.query.start || 0;
+        var limit = req.query.limit || PAGE_SIZE;
+        questionLib.getQuestionsSubset(start, limit, function(err, questions) {
             res.json(questions);
         });
 
