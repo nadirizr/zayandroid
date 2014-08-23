@@ -1,5 +1,7 @@
 package com.zayandroid.fineandall.mainapp.models;
 
+import android.content.Context;
+
 import com.zayandroid.fineandall.mainapp.ServerApi;
 
 import java.util.ArrayList;
@@ -32,14 +34,19 @@ public class Database {
         return null;
     }
 
-    public Question addQuestion(String text, String imageUrl) {
-        Question question = ServerApi.createQuestion(text, imageUrl);
+    public void addQuestion(Context context, String text, String imageUrl, final NewQuestionListener listener) {
+        ServerApi.createQuestion(context, text, imageUrl, new ServerApi.NewQuestionListener() {
+            @Override
+            public void onQuestionCreated(Question question) {
+                questions.add(question);
+                listener.onQuestionCreated(question);
+            }
 
-        // TODO - replace this stub with a new question
-        question = new Question(Integer.toString(new Random().nextInt()), text, imageUrl, 0, 0);
-
-        questions.add(question);
-        return question;
+            @Override
+            public void onFailure(Exception e) {
+                listener.onFailure(e);
+            }
+        });
     }
 
     public static Database getInstance() {
@@ -51,4 +58,8 @@ public class Database {
         return db;
     }
 
+    public interface NewQuestionListener {
+        public void onQuestionCreated(Question question);
+        public void onFailure(Exception e);
+    }
 }

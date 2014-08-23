@@ -3,10 +3,12 @@ package com.zayandroid.fineandall.mainapp;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.zayandroid.fineandall.mainapp.models.Question;
 
@@ -34,13 +36,7 @@ public class ServerApi {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject object = response.getJSONObject(i);
-                                String id = object.getString("_id");
-                                String text = object.getString("text");
-                                String imageUrl = object.getString("imageUrl");
-                                int yesCount = object.getInt("yes");
-                                int noCount = object.getInt("no");
-
-                                Question question = new Question(id, text, imageUrl, yesCount, noCount);
+                                Question question = Question.fromJSON(object);
                                 questions.add(question);
                             } catch (JSONException e) {
                                 Log.e("ServerApi", "Error while parsing post", e);
@@ -65,9 +61,37 @@ public class ServerApi {
         // TODO report to the server
     }
 
-    public static Question createQuestion(String text, String imageUrl) {
-        // TODO implement create on server and return the instance
-        return null;
+    public static void createQuestion(Context context, String text, String imageUrl, final NewQuestionListener listener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String uri = String.format("http://%s/questions", SERVER_URL);
+        try {
+            JSONObject params = new JSONObject();
+            params.put("text", text);
+            params.put("imageUrl", imageUrl);
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, params,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                Question question = Question.fromJSON(response);
+                                listener.onQuestionCreated(question);
+                            } catch (JSONException e) {
+                                listener.onFailure(e);
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("ServerApi", "Error while getting posts", error);
+                            error.printStackTrace();
+                            listener.onFailure(error);
+                        }
+                    });
+            queue.add(request);
+        } catch (JSONException e) {
+            listener.onFailure(e);
+        }
     }
 
     public enum Answer {
@@ -77,5 +101,10 @@ public class ServerApi {
 
     public interface QuestionsResponseListener {
         public void onQuestionsReceived(List<Question> questions);
+    }
+
+    public interface NewQuestionListener {
+        public void onQuestionCreated(Question question);
+        public void onFailure(Exception e);
     }
 }

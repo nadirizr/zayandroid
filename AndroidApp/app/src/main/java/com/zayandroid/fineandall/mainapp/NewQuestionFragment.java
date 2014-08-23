@@ -1,11 +1,11 @@
 package com.zayandroid.fineandall.mainapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +30,7 @@ import com.zayandroid.fineandall.mainapp.models.Question;
  */
 public class NewQuestionFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+    private ProgressDialog progress;
 
     /**
      * Use this factory method to create a new instance of
@@ -85,11 +86,34 @@ public class NewQuestionFragment extends Fragment {
     private void createAndDisplayQuestion() {
         String text = ((EditText) getView().findViewById(R.id.question_text)).getText().toString();
         String imageUrl = null;
-        Question question = Database.getInstance().addQuestion(text, imageUrl);
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, ExploreQuestionsFragment.newInstance(question.id))
-                .commit();
+        Database.getInstance().addQuestion(getActivity(), text, imageUrl, new Database.NewQuestionListener() {
+            @Override
+            public void onQuestionCreated(Question question) {
+                if (progress != null) {
+                    progress.dismiss();
+                    progress = null;
+                }
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, ExploreQuestionsFragment.newInstance(question.id))
+                        .commit();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                if (progress != null) {
+                    progress.dismiss();
+                    progress = null;
+                }
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, ExploreQuestionsFragment.newInstance(null))
+                        .commit();
+            }
+        });
+        progress = new ProgressDialog(getActivity());
+        progress.setTitle("Creating ...");
+        progress.show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,5 +1,8 @@
 package com.zayandroid.fineandall.mainapp.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by esheetrit on 22/08/2014.
  */
@@ -21,5 +24,15 @@ public class Question {
         this.imageUrl = imageUrl;
         this.yesCount = yesCount;
         this.noCount = noCount;
+    }
+
+    public static Question fromJSON(JSONObject json) throws JSONException {
+        String id = json.getString("_id");
+        String text = json.getString("text");
+        String imageUrl = json.getString("imageUrl");
+        int yesCount = json.getInt("yes");
+        int noCount = json.getInt("no");
+
+        return new Question(id, text, imageUrl, yesCount, noCount);
     }
 }
