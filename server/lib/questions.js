@@ -7,7 +7,7 @@ exports.getAllQuestions = function(callback) {
 };
 
 exports.getQuestionsSubset = function(start, limit, callback) {
-  Question.find({}).skip(start).limit(limit).exec(callback);
+  Question.find({}).sort({ _id: -1 }).skip(start).limit(limit).exec(callback);
 };
 
 exports.getQuestion = function(id, callback) {
