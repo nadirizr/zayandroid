@@ -2,6 +2,9 @@ package com.zayandroid.fineandall.mainapp;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -15,6 +18,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
+import android.view.View.OnTouchListener;
+import android.widget.Toast;
 
 import com.zayandroid.fineandall.mainapp.models.Database;
 import com.zayandroid.fineandall.mainapp.models.Question;
@@ -38,6 +46,70 @@ public class ExploreQuestionsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ProgressDialog progress;
 
+    public static abstract class OnSwipeTouchListener implements OnTouchListener {
+
+        public final GestureDetector gestureDetector;
+
+        public OnSwipeTouchListener (Context ctx){
+            gestureDetector = new GestureDetector(ctx, new GestureListener());
+        }
+
+        private final class GestureListener extends SimpleOnGestureListener {
+
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                boolean result = false;
+                try {
+                    float diffY = e2.getY() - e1.getY();
+                    float diffX = e2.getX() - e1.getX();
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffX > 0) {
+                                onSwipeRight();
+                            } else {
+                                onSwipeLeft();
+                            }
+                        }
+                        result = true;
+                    }
+                    else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+                            onSwipeBottom();
+                        } else {
+                            onSwipeTop();
+                        }
+                    }
+                    result = true;
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                return result;
+            }
+        }
+
+        public void onSwipeRight() {
+        }
+
+        public void onSwipeLeft() {
+        }
+
+        public void onSwipeTop() {
+        }
+
+        public void onSwipeBottom() {
+        }
+
+
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -107,6 +179,31 @@ public class ExploreQuestionsFragment extends Fragment {
     }
 
     private void updateView(View view, final Question question) {
+        view.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+            public void onSwipeRight() {
+            }
+
+            public void onSwipeLeft() {
+                //Toast.makeText(getActivity(), "onSwipeLeft", Toast.LENGTH_SHORT).show();
+
+                //Question question = Database.getInstance().getQuestion();
+
+                // Update view to present a new question
+                //updateView( getView(), question );
+                displayNewQuestion();
+            }
+
+            public void onSwipeTop() {
+            }
+
+            public void onSwipeBottom() {
+            }
+
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
+            }
+        });
+
         TextView textView = (TextView) view.findViewById(R.id.question_text);
         textView.setTextSize(40);
         textView.setText(question.question);
@@ -165,6 +262,28 @@ public class ExploreQuestionsFragment extends Fragment {
                 .replace(R.id.container, resultsFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private void displayNewQuestion() {
+        Database.getInstance().getQuestion(getActivity(), new Database.QuestionListener() {
+            @Override
+            public void onQuestion(Question question) {
+                Fragment resultsFragment = ExploreQuestionsFragment.newInstance(question.id);
+                final FragmentManager fm = getFragmentManager();
+                final FragmentTransaction ft = fm.beginTransaction();
+                getActivity().getFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, 0, 0)
+                        .replace(R.id.container, resultsFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
     }
 
     /**
