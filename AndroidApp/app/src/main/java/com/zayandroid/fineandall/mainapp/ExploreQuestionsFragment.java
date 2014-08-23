@@ -1,6 +1,7 @@
 package com.zayandroid.fineandall.mainapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -35,6 +36,7 @@ public class ExploreQuestionsFragment extends Fragment {
     private String questionId;
 
     private OnFragmentInteractionListener mListener;
+    private ProgressDialog progress;
 
     /**
      * Use this factory method to create a new instance of
@@ -65,21 +67,46 @@ public class ExploreQuestionsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        Question question;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (questionId == null) {
-            question = Database.getInstance().getQuestion();
+            Database.getInstance().getQuestion(getActivity(), new Database.QuestionListener() {
+                @Override
+                public void onQuestion(Question question) {
+                    if (progress != null) {
+                        progress.dismiss();
+                        progress = null;
+                    }
+                    updateView(getView(), question);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    if (progress != null) {
+                        progress.dismiss();
+                        progress = null;
+                    }
+                }
+            });
+            progress = new ProgressDialog(getActivity());
+            progress.setTitle("Loading ...");
+            progress.show();
+            return displayQuestion(inflater, container, null);
         } else {
-            question = Database.getInstance().getQuestion(questionId);
+            Question question = Database.getInstance().getQuestion(questionId);
+            return displayQuestion(inflater, container, question);
         }
-        View view = displayQuestion(inflater, container, question);
-        return view;
     }
 
     private View displayQuestion(LayoutInflater inflater, ViewGroup container, final Question question) {
         View view = inflater.inflate(R.layout.fragment_explore_questions, container, false);
 
+        if (question != null) {
+            updateView(view, question);
+        }
+        return view;
+    }
+
+    private void updateView(View view, final Question question) {
         TextView textView = (TextView) view.findViewById(R.id.question_text);
         textView.setTextSize(40);
         textView.setText(question.question);
@@ -105,7 +132,6 @@ public class ExploreQuestionsFragment extends Fragment {
                 displayResultsScreen(question.yesCount, question.noCount + 1);
             }
         });
-        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

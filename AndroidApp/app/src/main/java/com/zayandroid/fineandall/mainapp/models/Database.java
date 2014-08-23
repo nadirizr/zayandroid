@@ -1,44 +1,60 @@
 package com.zayandroid.fineandall.mainapp.models;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import com.zayandroid.fineandall.mainapp.ServerApi;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Database {
-    public List<Question> questions;
+    public Map<String, Question> questions;
     private static boolean initialized;
     private static Database db;
 
     public Database() {
-        questions = new ArrayList<Question>();
-        questions.add(new Question("1", "Your girlfriend is fine and all but she got hairy armpits", null, 70, 30));
-        questions.add(new Question("2", "Your girlfriend is fine and all but she likes lagi", "http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg", 20, 80));
+        questions = new HashMap<String, Question>();
     }
 
-    public Question getQuestion() {
-        Random r = new Random();
-        int idx = r.nextInt(questions.size());
-        return questions.get(idx);
+    public void getQuestion(Context context, final QuestionListener listener) {
+        if (!questions.isEmpty()) {
+            sendRandomQuestionToListener(listener);
+        }
+        ServerApi.fetchQuestions(context, new ServerApi.QuestionsResponseListener() {
+            @Override
+            public void onQuestionsReceived(List<Question> questionsFromServer) {
+                for (Question question : questionsFromServer) {
+                    questions.put(question.id, question);
+                }
+                sendRandomQuestionToListener(listener);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                listener.onFailure(e);
+            }
+        });
+    }
+
+    private void sendRandomQuestionToListener(QuestionListener listener) {
+        Random generator = new Random();
+        Question[] values = questions.values().toArray(new Question[]{});
+        Question question = values[generator.nextInt(values.length)];
+        listener.onQuestion(question);
     }
 
     public Question getQuestion(String questionId) {
-        for (Question question : questions) {
-            if (questionId.equals(question.id)) {
-                return question;
-            }
-        }
-        return null;
+        return questions.get(questionId);
     }
 
     public void addQuestion(Context context, String text, String imageUrl, final NewQuestionListener listener) {
         ServerApi.createQuestion(context, text, imageUrl, new ServerApi.NewQuestionListener() {
             @Override
             public void onQuestionCreated(Question question) {
-                questions.add(question);
+                questions.put(question.id, question);
                 listener.onQuestionCreated(question);
             }
 
@@ -50,7 +66,7 @@ public class Database {
     }
 
     public static Database getInstance() {
-        if (initialized == false) {
+        if (!initialized) {
             db = new Database();
             initialized = true;
         }
@@ -60,6 +76,11 @@ public class Database {
 
     public interface NewQuestionListener {
         public void onQuestionCreated(Question question);
+        public void onFailure(Exception e);
+    }
+
+    public interface QuestionListener {
+        public void onQuestion(Question question);
         public void onFailure(Exception e);
     }
 }
