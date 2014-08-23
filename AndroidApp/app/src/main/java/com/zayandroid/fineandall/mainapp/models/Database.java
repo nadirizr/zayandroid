@@ -13,8 +13,8 @@ public class Database {
 
     public Database() {
         questions = new ArrayList<Question>();
-        questions.add(new Question("1", "Your girlfriend is fine and all but she got hairy armpits", null, 0, 0));
-        questions.add(new Question("2", "Your girlfriend is fine and all but she likes lagi", "http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg", 0, 0));
+        questions.add(new Question("1", "Your girlfriend is fine and all but she got hairy armpits", null, 70, 30));
+        questions.add(new Question("2", "Your girlfriend is fine and all but she likes lagi", "http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg", 20, 80));
     }
 
     public Question getQuestion() {

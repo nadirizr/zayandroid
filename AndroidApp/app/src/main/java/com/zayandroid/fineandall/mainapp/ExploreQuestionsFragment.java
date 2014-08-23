@@ -79,6 +79,7 @@ public class ExploreQuestionsFragment extends Fragment {
 
     private View displayQuestion(LayoutInflater inflater, ViewGroup container, final Question question) {
         View view = inflater.inflate(R.layout.fragment_explore_questions, container, false);
+
         TextView textView = (TextView) view.findViewById(R.id.question_text);
         textView.setTextSize(40);
         textView.setText(question.question);
