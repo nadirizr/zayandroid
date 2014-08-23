@@ -34,12 +34,13 @@ public class ServerApi {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject object = response.getJSONObject(i);
+                                String id = object.getString("_id");
                                 String text = object.getString("text");
                                 String imageUrl = object.getString("imageUrl");
                                 int yesCount = object.getInt("yes");
                                 int noCount = object.getInt("no");
 
-                                Question question = new Question(text, imageUrl, yesCount, noCount);
+                                Question question = new Question(id, text, imageUrl, yesCount, noCount);
                                 questions.add(question);
                             } catch (JSONException e) {
                                 Log.e("ServerApi", "Error while parsing post", e);
@@ -58,6 +59,15 @@ public class ServerApi {
                     }
                 });
         queue.add(request);
+    }
+
+    public static void answerQuestion(Question question, Answer answer) {
+        // TODO report to the server
+    }
+
+    public enum Answer {
+        YES,
+        NO
     }
 
     public interface QuestionsResponseListener {

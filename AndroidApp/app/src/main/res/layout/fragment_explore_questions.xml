@@ -24,7 +24,7 @@
         android:layout_marginBottom="10dp" >
 
         <Button
-            android:id="@+id/NoButton"
+            android:id="@+id/no_button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -35,7 +35,7 @@
             android:text="No" />
 
         <Button
-            android:id="@+id/YesButton"
+            android:id="@+id/yes_button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

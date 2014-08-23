@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.zayandroid.fineandall.mainapp.models.Database;
 import com.zayandroid.fineandall.mainapp.models.Question;
 
 import java.io.InputStream;
@@ -76,7 +79,7 @@ public class ExploreQuestionsFragment extends Fragment {
 
         // TODO: get new question from DB
         // Create the text view
-        Question question = new Question("Why or why not", "http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg", 100, 10);
+        final Question question = Database.getInstance().getQuestion();
         TextView textView = (TextView) view.findViewById(R.id.question_text);
         textView.setTextSize(40);
         textView.setText(question.question);
@@ -84,6 +87,24 @@ public class ExploreQuestionsFragment extends Fragment {
         if (question.imageUrl != null) {
             new DownloadImageTask((ImageView) view.findViewById(R.id.question_image)).execute(question.imageUrl);
         }
+
+        Button yesButton = (Button) view.findViewById(R.id.yes_button);
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ServerApi.answerQuestion(question, ServerApi.Answer.YES);
+                displayResultsScreen(question.yesCount + 1, question.noCount);
+            }
+        });
+
+        Button noButton = (Button) view.findViewById(R.id.no_button);
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ServerApi.answerQuestion(question, ServerApi.Answer.NO);
+                displayResultsScreen(question.yesCount, question.noCount + 1);
+            }
+        });
 
         return view;
     }
@@ -110,6 +131,15 @@ public class ExploreQuestionsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void displayResultsScreen(int yesCount, int noCount) {
+        Fragment resultsFragment = QuestionResultsFragment.newInstance(yesCount, noCount);
+        getActivity().getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, resultsFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     /**
