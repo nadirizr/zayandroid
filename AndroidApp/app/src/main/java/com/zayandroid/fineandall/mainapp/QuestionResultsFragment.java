@@ -1,5 +1,21 @@
 package com.zayandroid.fineandall.mainapp;
 
+
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.model.CategorySeries;
+import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.renderer.SimpleSeriesRenderer;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,13 +79,55 @@ public class QuestionResultsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_results, container, false);
 
-        TextView yesCountView = (TextView) view.findViewById(R.id.yes_count);
-        yesCountView.setText("YES:\n" + yesCount);
-
-        TextView noCountView = (TextView) view.findViewById(R.id.no_count);
-        noCountView.setText("NO:\n" + noCount);
+        openChart();
 
         return view;
+    }
+
+    private void openChart(){
+
+        double totalCount    = yesCount + noCount;
+        double yesPercentage = yesCount / totalCount;
+        double noPercentage  = noCount / totalCount;
+
+        // Pie Chart Section Names
+        String[] code = new String[] { "No", "Yes" };
+
+        // Pie Chart Section Value
+        double[] distribution = { noPercentage, yesPercentage };
+
+        // Color of each Pie Chart Sections
+        int[] colors = { Color.RED, Color.GREEN };
+
+        // Instantiating CategorySeries to plot Pie Chart
+        CategorySeries distributionSeries = new CategorySeries("");
+        for(int i=0 ;i < distribution.length;i++){
+            // Adding a slice with its values and name to the Pie Chart
+            distributionSeries.add(code[i], distribution[i]);
+        }
+
+        // Instantiating a renderer for the Pie Chart
+        DefaultRenderer defaultRenderer  = new DefaultRenderer();
+        for(int i = 0 ;i<distribution.length;i++){
+            SimpleSeriesRenderer seriesRenderer = new SimpleSeriesRenderer();
+            seriesRenderer.setColor(colors[i]);
+            seriesRenderer.setDisplayChartValues(true);
+            // Adding a renderer for a slice
+            defaultRenderer.addSeriesRenderer(seriesRenderer);
+        }
+
+        defaultRenderer.setChartTitle("Question Yes/No results");
+        defaultRenderer.setChartTitleTextSize(60);
+        defaultRenderer.setLabelsTextSize(40);
+        defaultRenderer.setLegendTextSize(40);
+        defaultRenderer.setZoomButtonsVisible(true);
+
+        // Creating an intent to plot bar chart using dataset and multipleRenderer
+        Intent intent = ChartFactory.getPieChartIntent(getActivity(), distributionSeries , defaultRenderer, "Question Results");
+
+        // Start Activity
+        startActivity(intent);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,6 +164,8 @@ public class QuestionResultsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
