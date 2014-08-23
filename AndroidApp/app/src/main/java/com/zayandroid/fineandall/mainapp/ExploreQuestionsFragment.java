@@ -69,7 +69,7 @@ public class ExploreQuestionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         Question question;
         if (questionId == null) {
-            question = Database.getInstance().getQuestion();
+            question = Database.getInstance().getQuestion(getActivity());
         } else {
             question = Database.getInstance().getQuestion(questionId);
         }

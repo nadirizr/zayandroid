@@ -41,6 +41,7 @@ public class ServerApi {
                             } catch (JSONException e) {
                                 Log.e("ServerApi", "Error while parsing post", e);
                                 e.printStackTrace();
+                                listener.onFailure(e);
                             }
                         }
 
@@ -52,6 +53,7 @@ public class ServerApi {
                     public void onErrorResponse(VolleyError error) {
                         Log.e("ServerApi", "Error while getting posts", error);
                         error.printStackTrace();
+                        listener.onFailure(error);
                     }
                 });
         queue.add(request);
@@ -101,6 +103,7 @@ public class ServerApi {
 
     public interface QuestionsResponseListener {
         public void onQuestionsReceived(List<Question> questions);
+        public void onFailure(Exception e);
     }
 
     public interface NewQuestionListener {

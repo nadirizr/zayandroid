@@ -10,7 +10,8 @@ import android.view.MenuItem;
 public class MainActivity extends Activity implements
         ExploreQuestionsFragment.OnFragmentInteractionListener,
         QuestionResultsFragment.OnFragmentInteractionListener,
-        NewQuestionFragment.OnFragmentInteractionListener {
+        NewQuestionFragment.OnFragmentInteractionListener,
+        BlankFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
