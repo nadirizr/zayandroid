@@ -18,8 +18,14 @@ module.exports = function (router) {
           text: req.body.text,
           imageUrl: req.body.imageUrl
         };
-        questionLib.createQuestion(data, function(err) {
-            console.log('Error saving new question: ' + data);
+        questionLib.createQuestion(data, function(err, question) {
+            if (err) {
+              console.log('Error saving new question: ' + data);
+              res.json({ error: data });
+              return;
+            }
+            
+            res.json(question);
         });
 
     });

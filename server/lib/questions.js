@@ -6,10 +6,12 @@ exports.getAllQuestions = function(callback) {
   Question.find({}).exec(callback);
 };
 
-exports.createQuestion = function(data, error_callback) {
+exports.createQuestion = function(data, callback) {
   var q = new Question(data);
-  if (error_callback) {
-    q.save(error_callback);
+  if (callback) {
+    q.save(function(err) {
+      return callback(err, q);
+    });
   }
 };
 
