@@ -12,6 +12,22 @@ module.exports = function (router) {
 
     });
 
+    router.get('/:id', function (req, res) {
+        
+        questionLib.getQuestion(req.params.id, function(err, question) {
+            if (err) {
+              var error_string = 'Error getting question (id=' +
+                                 req.params.id + '): ' + err;
+              console.log(error_string);
+              res.json({ error: error_string });
+              return;
+            }
+            
+            res.json(question);
+        });
+
+    });
+
     router.post('/', function (req, res) {
         
         var data = {
