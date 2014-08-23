@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.zayandroid.fineandall.mainapp.models.Database;
 import com.zayandroid.fineandall.mainapp.models.Question;
 
 import java.io.InputStream;
@@ -77,7 +79,7 @@ public class ExploreQuestionsFragment extends Fragment {
 
         // TODO: get new question from DB
         // Create the text view
-        final Question question = new Question(1, "Why or why not", "http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg", 100, 10);
+        final Question question = Database.getInstance().getQuestion();
         TextView textView = (TextView) view.findViewById(R.id.question_text);
         textView.setTextSize(40);
         textView.setText(question.question);
