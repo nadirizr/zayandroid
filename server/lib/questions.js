@@ -7,6 +7,10 @@ exports.getAllQuestions = function(callback) {
 };
 
 exports.addStubQuestions = function() {
+  // Remove existing questions.
+  Question.find({}).remove().exec();
+
+  // Add new stub questions.
   var q1 = new Question({
     text: 'יש לה קרציה בין הבהונות',
     imageUrl: 'http://upload.wikimedia.org/wikipedia/en/4/43/The_Ramen_Girl_poster.jpg',
