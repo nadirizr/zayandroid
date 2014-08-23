@@ -1,5 +1,7 @@
 package com.zayandroid.fineandall.mainapp.models;
 
+import com.zayandroid.fineandall.mainapp.ServerApi;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,8 +23,23 @@ public class Database {
         return questions.get(idx);
     }
 
-    public void addQuestion(Question q) {
-        questions.add(q);
+    public Question getQuestion(String questionId) {
+        for (Question question : questions) {
+            if (questionId.equals(question.id)) {
+                return question;
+            }
+        }
+        return null;
+    }
+
+    public Question addQuestion(String text, String imageUrl) {
+        Question question = ServerApi.createQuestion(text, imageUrl);
+
+        // TODO - replace this stub with a new question
+        question = new Question(Integer.toString(new Random().nextInt()), text, imageUrl, 0, 0);
+
+        questions.add(question);
+        return question;
     }
 
     public static Database getInstance() {
