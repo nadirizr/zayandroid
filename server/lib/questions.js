@@ -6,13 +6,43 @@ exports.getAllQuestions = function(callback) {
   Question.find({}).exec(callback);
 };
 
+exports.getQuestion = function(id, callback) {
+  Question.findOne({ _id: id }).exec(callback);
+};
+
 exports.createQuestion = function(data, callback) {
   var q = new Question(data);
+
   if (callback) {
     q.save(function(err) {
       return callback(err, q);
     });
+  } else {
+    q.save();
   }
+};
+
+exports.updateQuestion = function(id, answer, callback) {
+  exports.getQuestion(id, function(err, question) {
+    if (err) {
+      return callback(err, question);
+    }
+    if (!question) {
+      return callback('Question not found: ' + question, null);
+    }
+
+    if (answer == 'yes') {
+      question.yes_count++;
+    } else if (answer == 'no') {
+      question.no_count++;
+    } else {
+      return callback('Invalid answer: ' + answer, null);
+    }
+
+    question.save(function(err) {
+      return callback(err, question);
+    });
+  });
 };
 
 exports.addStubQuestions = function() {

@@ -30,4 +30,24 @@ module.exports = function (router) {
 
     });
 
+    router.put('/:id', function (req, res) {
+        
+        questionLib.updateQuestion(req.params.id, req.body.answer,
+                                   function(err, question) {
+            if (err) {
+              var error_string = 'Error saving new question (id=' +
+                                 req.params.id +
+                                 ', answer=' +
+                                 req.body.answer + '): ' +
+                                 err;
+              console.log(error_string);
+              res.json({ error: error_string });
+              return;
+            }
+            
+            res.json(question);
+        });
+
+    });
+
 };
