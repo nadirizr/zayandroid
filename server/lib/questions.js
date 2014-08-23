@@ -6,6 +6,15 @@ exports.getAllQuestions = function(callback) {
   Question.find({}).exec(callback);
 };
 
+exports.createQuestion = function(data, callback) {
+  var q = new Question(data);
+  if (callback) {
+    q.save(function(err) {
+      return callback(err, q);
+    });
+  }
+};
+
 exports.addStubQuestions = function() {
   // Remove existing questions.
   Question.find({}).remove(function(err, res) {

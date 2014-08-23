@@ -25,7 +25,7 @@ public class ServerApi {
 
     public static void fetchQuestions(Context context, final QuestionsResponseListener listener) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String uri = String.format("http://%s/posts", SERVER_URL);
+        String uri = String.format("http://%s/questions", SERVER_URL);
         JsonArrayRequest request = new JsonArrayRequest(uri,
                 new Response.Listener<JSONArray>() {
                     @Override
