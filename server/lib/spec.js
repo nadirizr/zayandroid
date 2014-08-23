@@ -9,6 +9,8 @@ module.exports = function(app) {
           var dbConfig = config.get('databaseConfig');
           db.config(dbConfig);
 
+          questionsLib.addStubQuestions();
+
           next(null, config);
         }
   };
