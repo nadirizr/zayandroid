@@ -30,14 +30,9 @@ import java.io.InputStream;
  *
  */
 public class ExploreQuestionsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String QUESTION_ID = "question_id";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String questionId;
 
     private OnFragmentInteractionListener mListener;
 
@@ -45,17 +40,16 @@ public class ExploreQuestionsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ExploreQuestionsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ExploreQuestionsFragment newInstance(String param1, String param2) {
+    public static ExploreQuestionsFragment newInstance(String questionId) {
         ExploreQuestionsFragment fragment = new ExploreQuestionsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        if (questionId != null) {
+            Bundle args = new Bundle();
+            args.putString(QUESTION_ID, questionId);
+            fragment.setArguments(args);
+        }
         return fragment;
     }
     public ExploreQuestionsFragment() {
@@ -66,20 +60,25 @@ public class ExploreQuestionsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            questionId = getArguments().getString(QUESTION_ID);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_explore_questions, container, false);
+        Question question;
+        if (questionId == null) {
+            question = Database.getInstance().getQuestion();
+        } else {
+            question = Database.getInstance().getQuestion(questionId);
+        }
+        View view = displayQuestion(inflater, container, question);
+        return view;
+    }
 
-        // TODO: get new question from DB
-        // Create the text view
-        final Question question = Database.getInstance().getQuestion();
+    private View displayQuestion(LayoutInflater inflater, ViewGroup container, final Question question) {
+        View view = inflater.inflate(R.layout.fragment_explore_questions, container, false);
         TextView textView = (TextView) view.findViewById(R.id.question_text);
         textView.setTextSize(40);
         textView.setText(question.question);
@@ -105,7 +104,6 @@ public class ExploreQuestionsFragment extends Fragment {
                 displayResultsScreen(question.yesCount, question.noCount + 1);
             }
         });
-
         return view;
     }
 

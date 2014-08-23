@@ -65,6 +65,11 @@ public class ServerApi {
         // TODO report to the server
     }
 
+    public static Question createQuestion(String text, String imageUrl) {
+        // TODO implement create on server and return the instance
+        return null;
+    }
+
     public enum Answer {
         YES,
         NO

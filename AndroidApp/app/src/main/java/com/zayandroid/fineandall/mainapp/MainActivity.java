@@ -9,7 +9,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends Activity implements
         ExploreQuestionsFragment.OnFragmentInteractionListener,
-        QuestionResultsFragment.OnFragmentInteractionListener {
+        QuestionResultsFragment.OnFragmentInteractionListener,
+        NewQuestionFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +19,7 @@ public class MainActivity extends Activity implements
 
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.container, ExploreQuestionsFragment.newInstance("", ""))
+                .add(R.id.container, ExploreQuestionsFragment.newInstance(null))
                 .commit();
     }
 
@@ -33,6 +34,13 @@ public class MainActivity extends Activity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
+            case R.id.action_new_question:
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, NewQuestionFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+                return true;
             case R.id.action_search:
                 //openSearch();
                 return true;
